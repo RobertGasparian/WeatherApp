@@ -1,7 +1,7 @@
 package com.example.weatherapp.networking.responses
 
 import com.example.weatherapp.data.models.City
-import com.example.weatherapp.data.models.WList
+import com.example.weatherapp.data.models.WeatherData
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -18,7 +18,7 @@ class WeatherListResponse {
     var cnt: Int? = null
     @SerializedName("list")
     @Expose
-    var list: List<WList>? = null
+    var list: List<WeatherData>? = null
     @SerializedName("city")
     @Expose
     var city: City? = null

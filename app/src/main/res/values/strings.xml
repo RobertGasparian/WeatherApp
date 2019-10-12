@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="today">Today</string>
+    <string name="daily">Daily</string>
+    <string name="humidity">Humidity</string>
+    <string name="min_temp">Min Temp</string>
+    <string name="max_temp">Max Temp</string>
+    <string name="pressure">Pressure</string>
+    <string name="no_value">N/A</string>
+    <string name="ok">Ok</string>
+    <string name="error_title">ERROR</string>
+    <string name="unknown_error">Unknown error</string>
 </resources>

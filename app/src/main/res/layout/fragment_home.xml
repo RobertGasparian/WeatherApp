@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_bg"
     android:orientation="vertical">
 
     <ScrollView
@@ -14,17 +15,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/cityTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
+            <FrameLayout
+                android:id="@+id/myToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="TextView" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </FrameLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/currentWeatherVG"
@@ -33,7 +38,7 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cityTv">
+                app:layout_constraintTop_toBottomOf="@+id/myToolbar">
 
                 <LinearLayout
                     android:id="@+id/linearLayout"
@@ -44,7 +49,6 @@
                     android:layout_marginEnd="32dp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/currentTempTv">
 
@@ -59,7 +63,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            tools:text="Humidity" />
+                            android:text="@string/humidity" />
 
                         <TextView
                             android:id="@+id/currHumidityTv"
@@ -82,7 +86,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            tools:text="Min Temp" />
+                            android:text="@string/min_temp" />
 
                         <TextView
                             android:id="@+id/minTempTv"
@@ -105,7 +109,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            tools:text="Max Temp" />
+                            android:text="@string/max_temp" />
 
                         <TextView
                             android:id="@+id/maxTempTv"
@@ -128,7 +132,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            tools:text="Pressure" />
+                            android:text="@string/pressure" />
 
                         <TextView
                             android:id="@+id/preasureTv"
@@ -143,12 +147,10 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/weatherIv"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:srcCompat="@tools:sample/avatars" />
@@ -158,14 +160,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:textSize="36sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView"
-                    tools:text="25" />
+                    android:text="@string/no_value"
+                    android:textSize="40sp"
+                    app:layout_constraintEnd_toEndOf="@+id/weatherIv"
+                    app:layout_constraintStart_toStartOf="@+id/weatherIv"
+                    app:layout_constraintTop_toBottomOf="@+id/weatherIv" />
 
                 <ProgressBar
-                    android:id="@+id/progressBar"
+                    android:id="@+id/currentPB"
                     style="?android:attr/progressBarStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -175,38 +177,90 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/cityTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="@string/no_value"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/weatherIv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/weatherIv"
+                    app:layout_constraintTop_toTopOf="@+id/weatherIv" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/todayVG"
+            <LinearLayout
+                android:id="@+id/detailedVG"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/currentWeatherVG">
 
+
+                <TextView
+                    android:id="@+id/todayTitleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/today"
+                    android:textSize="18sp" />
+
+                <View
+                    android:id="@+id/todaySeparator"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/white" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/todayRV"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_today" />
+
+                <TextView
+                    android:id="@+id/dailyTitleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/daily"
+                    android:textSize="18sp" />
+
+                <View
+                    android:id="@+id/dailySeparator"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/white" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/dailyRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/todayRV" />
+                    tools:listitem="@layout/item_daily" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/detailedPB"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/detailedVG"
+                app:layout_constraintEnd_toEndOf="@id/detailedVG"
+                app:layout_constraintStart_toStartOf="@id/detailedVG"
+                app:layout_constraintTop_toTopOf="@id/detailedVG" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

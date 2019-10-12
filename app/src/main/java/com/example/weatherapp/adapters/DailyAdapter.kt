@@ -1,16 +1,27 @@
 package com.example.weatherapp.adapters
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.weatherapp.R
 import com.example.weatherapp.adapters.viewholders.DailyViewHolder
+import com.example.weatherapp.adapters.viewholders.TodayViewHolder
+import com.example.weatherapp.data.models.AverageDayWeatherDTO
 
-class DailyAdapter(items: List<ListItem>) : BaseAdapter<DailyViewHolder>(items) {
+class DailyAdapter(private var items: List<AverageDayWeatherDTO?>) : BaseAdapter<DailyViewHolder, AverageDayWeatherDTO>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_daily, parent, false)
+        return DailyViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: DailyViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        holder.bind(items[position])
+    }
+
+    override fun updateItemList(itemList: List<AverageDayWeatherDTO?>) {
+        super.updateItemList(itemList)
+        items = itemList
+        notifyDataSetChanged()
     }
 
 }

@@ -1,6 +1,10 @@
 package com.example.weatherapp.data
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.example.weatherapp.app.WeatherUtils
+import com.example.weatherapp.data.models.AverageDayWeatherDTO
+import com.example.weatherapp.data.models.WeatherData
 import com.example.weatherapp.networking.ApiService
 import com.example.weatherapp.networking.responses.CurrentWeatherResponse
 import com.example.weatherapp.networking.responses.WeatherListResponse
@@ -42,8 +46,8 @@ object Repository {
 
     }
 
-    fun getWeatherList(city: String): LiveData<Resource<WeatherListResponse>> {
-        return object : NetworkBoundResource<WeatherListResponse>() {
+    fun getWeatherList(city: String): LiveData<Resource<List<List<WeatherData>>>> {
+        return object : NetworkBoundResource<List<List<WeatherData>>>() {
             override fun createCall() {
                 apiService.getWearherList(city)
                     .enqueue(object : Callback<WeatherListResponse> {
@@ -56,7 +60,12 @@ object Repository {
                             response: Response<WeatherListResponse>
                         ) {
                             response.body()?.let {
-                                setValue(Resource.Success(it))
+                                val list = WeatherUtils.filterWeather(it)
+                                list?.let { weatherList ->
+                                    setValue(Resource.Success(weatherList))
+                                } ?: run {
+                                    setValue(Resource.Error("invalid data", null))
+                                }
                             } ?: run {
                                 setValue(Resource.Error("invalid data", null))
                             }
@@ -65,6 +74,20 @@ object Repository {
                     })
             }
         }.asLiveData()
+    }
 
+    fun getAvarageDailyWeather(listOfList: List<List<WeatherData>>): LiveData<Resource<List<AverageDayWeatherDTO?>>> {
+        val liveData = MutableLiveData<Resource<List<AverageDayWeatherDTO?>>>()
+        val list = mutableListOf<AverageDayWeatherDTO?>()
+        listOfList.forEach {
+            list.add(WeatherUtils.getAverageWeatherData(it))
+        }
+        return if (list.isEmpty()) {
+            liveData.value = Resource.Error("empty list of data", list)
+            liveData
+        } else {
+            liveData.value = Resource.Success(list)
+            liveData
+        }
     }
 }

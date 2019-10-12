@@ -1,16 +1,17 @@
 package com.example.weatherapp.adapters
 
+import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.adapters.viewholders.BaseViewHolder
 
-abstract class BaseAdapter<T: BaseViewHolder>(protected var itemList: List<ListItem>) : RecyclerView.Adapter<T>() {
+abstract class BaseAdapter<T: BaseViewHolder<*>, V: ListItem>(private var listItems: List<ListItem?>) : RecyclerView.Adapter<T>() {
 
     override fun getItemCount(): Int {
-        return itemList.size
+        return listItems.size
     }
 
-    fun updateItemList(itemList: List<ListItem>) {
-        this.itemList = itemList
-        notifyDataSetChanged()
+    @CallSuper
+    open fun updateItemList(itemList: List<V?>) {
+        listItems = itemList
     }
 }

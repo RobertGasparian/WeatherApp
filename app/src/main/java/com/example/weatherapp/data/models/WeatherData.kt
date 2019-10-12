@@ -1,13 +1,14 @@
 package com.example.weatherapp.data.models
 
+import com.example.weatherapp.adapters.ListItem
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class WList {
+class WeatherData: ListItem {
 
     @SerializedName("dt")
     @Expose
-    var dt: Int? = null
+    var dt: Long? = null
     @SerializedName("main")
     @Expose
     var main: Main? = null

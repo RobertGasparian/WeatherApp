@@ -28,6 +28,6 @@ class Main {
     var humidity: Int? = null
     @SerializedName("temp_kf")
     @Expose
-    var tempKf: Int? = null
+    var tempKf: Double? = null
 
 }

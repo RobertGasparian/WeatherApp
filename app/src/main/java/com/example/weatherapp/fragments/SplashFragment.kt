@@ -17,7 +17,7 @@ class SplashFragment : BaseFragment() {
         //do nothing
     }
 
-    override fun setupClicks() {
+    override fun setupListeners() {
         //do nothing
     }
 

@@ -1,7 +1,6 @@
 package com.example.weatherapp.networking.responses
 
 import com.example.weatherapp.data.models.*
-import com.example.weatherapp.models.*
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
